@@ -9,20 +9,21 @@ namespace Library
     public class Department
     {
         string name;
-        Employee[] employees;
+        List<Employee> employees;
         Employee headDepartment;
 
         // department members 
-        int nEmployees;
+        int nMaxEmployees;
+        int nEmployees = 0;
 
-        public Department(string name, int nEmployees, Employee headDepartment)
+        public Department(string name, int nMaxEmployees, Employee headDepartment)
         {
             this.name = name;
 
             // creating array to manage employee association (1-n)
-            employees = new Employee[nEmployees];
-            nEmployees += 1;
-
+            employees = new List<Employee>();
+            this.nMaxEmployees = nMaxEmployees;
+            nEmployees++;
             this.headDepartment = headDepartment;
         }
 
@@ -33,10 +34,10 @@ namespace Library
         /// <returns>false with an error</returns>
         public bool AddEmployee(Employee employee) 
         {
-            if (nEmployees < employees.Length) 
+            if (nEmployees < nMaxEmployees) 
             { 
-                employees[nEmployees] = employee;
-                nEmployees += 1;
+                employees.Add(employee);
+                nEmployees++;
             }
             else
                 return false;
@@ -52,13 +53,12 @@ namespace Library
         {
             string res = "";
 
-            for (int i=0;i<nEmployees;i++)
+            foreach (Employee employee in employees)
             {
-                if (res.Length>0) res += ",";
+                if (res.Length > 0) res += ",";
 
-                res += $"{employees[i].Description()}";
+                res += $"{employee.Description()}";
             }
-
             return res;
         }
 
